@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Konfiguracja LongDrive</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #202938;
+        background: #f4f6f9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-width: 360px;
+      }
+
+      main {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 34px 38px 28px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 25px;
+        font-weight: 650;
+      }
+
+      .intro {
+        margin: 0 0 24px;
+        color: #536174;
+        line-height: 1.5;
+      }
+
+      .options {
+        display: grid;
+        gap: 14px;
+      }
+
+      .option {
+        padding: 18px 20px;
+        border: 1px solid #d5dce5;
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .option h2 {
+        margin: 0 0 7px;
+        font-size: 16px;
+      }
+
+      .option p {
+        margin: 0 0 14px;
+        color: #536174;
+        line-height: 1.45;
+      }
+
+      button {
+        min-height: 36px;
+        padding: 7px 15px;
+        border: 1px solid #b9c4d2;
+        border-radius: 5px;
+        background: #fff;
+        color: #202938;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      button.primary {
+        border-color: #1558a6;
+        background: #1558a6;
+        color: #fff;
+      }
+
+      button:disabled {
+        cursor: default;
+        opacity: 0.55;
+      }
+
+      .status {
+        min-height: 56px;
+        margin-top: 18px;
+        padding: 12px 14px;
+        border-radius: 6px;
+        background: #e9eef5;
+        color: #344258;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+
+      .status.error {
+        background: #fff0ed;
+        color: #8b2418;
+      }
+
+      .status.success {
+        background: #e8f5ed;
+        color: #185b32;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Konfiguracja danych LongDrive</h1>
+      <p class="intro">
+        Wybierz, jak przygotować bazę danych w wybranym katalogu danych. Istniejące pliki nie zostaną nadpisane.
+      </p>
+
+      <div class="options" id="options">
+        <section class="option">
+          <h2>Utwórz nową bazę danych</h2>
+          <p>Rozpocznij z czystą bazą LongDrive i nowym sekretem JWT.</p>
+          <button class="primary" id="create">Utwórz nową bazę</button>
+        </section>
+        <section class="option">
+          <h2>Wczytaj istniejącą bazę</h2>
+          <p>Wybierz plik bazy LongDrive. Aplikacja utworzy bezpieczną kopię, a oryginalny plik pozostanie bez zmian.</p>
+          <button id="import">Wybierz bazę...</button>
+        </section>
+      </div>
+
+      <div class="status" id="status" role="status" aria-live="polite">
+        Wybierz jedną z powyższych opcji, aby kontynuować.
+      </div>
+
+      <div class="actions">
+        <button id="cancel">Zamknij</button>
+        <button class="primary" id="continue" hidden>Uruchom LongDrive</button>
+      </div>
+    </main>
+    <script>
+      const options = document.getElementById('options');
+      const status = document.getElementById('status');
+      const createButton = document.getElementById('create');
+      const importButton = document.getElementById('import');
+      const continueButton = document.getElementById('continue');
+      const cancelButton = document.getElementById('cancel');
+
+      const setBusy = (busy) => {
+        createButton.disabled = busy;
+        importButton.disabled = busy;
+        cancelButton.disabled = busy;
+      };
+
+      const showFailure = (error) => {
+        status.className = 'status error';
+        status.textContent = error.message || 'Wystąpił nieoczekiwany błąd konfiguracji danych.';
+      };
+
+      const showSuccess = (result, imported) => {
+        options.hidden = true;
+        status.className = 'status success';
+        status.textContent = `${imported ? 'Baza została wczytana' : 'Nowa baza została utworzona'}.\n` +
+          `Katalog danych: ${result.dataDirectory}\nLokalizacja bazy: ${result.databasePath}`;
+        continueButton.hidden = false;
+        cancelButton.textContent = 'Zakończ bez uruchamiania';
+      };
+
+      createButton.addEventListener('click', async () => {
+        setBusy(true);
+        status.className = 'status';
+        status.textContent = 'Tworzenie nowej bazy i przygotowywanie konfiguracji...';
+        try {
+          showSuccess(await window.longDriveSetup.createDatabase(), false);
+        } catch (error) {
+          showFailure(error);
+          setBusy(false);
+        }
+      });
+
+      importButton.addEventListener('click', async () => {
+        setBusy(true);
+        status.className = 'status';
+        status.textContent = 'Wybierz plik istniejącej bazy LongDrive.';
+        try {
+          const result = await window.longDriveSetup.importDatabase();
+          if (result.cancelled) {
+            status.textContent = 'Wczytywanie anulowano. Istniejąca baza nie została zmieniona.';
+            setBusy(false);
+            return;
+          }
+          showSuccess(result, true);
+        } catch (error) {
+          showFailure(error);
+          setBusy(false);
+        }
+      });
+
+      continueButton.addEventListener('click', async () => {
+        continueButton.disabled = true;
+        try {
+          await window.longDriveSetup.continueToApplication();
+        } catch (error) {
+          showFailure(error);
+          continueButton.disabled = false;
+        }
+      });
+
+      cancelButton.addEventListener('click', () => window.longDriveSetup.cancel());
+    </script>
+  </body>
+</html>
