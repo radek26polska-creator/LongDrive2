@@ -120,12 +120,18 @@ const authController = {
       const email = normalizeEmail(submittedEmail);
       const user = await User.findByEmail(email);
       if (!user) {
-        return res.status(401).json({ error: 'Nieprawidłowe dane logowania' });
+        return res.status(404).json({
+          code: 'USER_NOT_FOUND',
+          error: 'Użytkownik o podanym adresie email nie istnieje',
+        });
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password_hash);
       if (!isPasswordValid) {
-        return res.status(401).json({ error: 'Nieprawidłowe dane logowania' });
+        return res.status(401).json({
+          code: 'INVALID_PASSWORD',
+          error: 'Wprowadzone hasło jest nieprawidłowe',
+        });
       }
 
       const token = await createAuthenticatedSession(user);
