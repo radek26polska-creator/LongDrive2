@@ -97,7 +97,11 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Register error:', error);
       logAction('register', { email, error: error.message });
-      return { success: false, error: error.message || 'Błąd rejestracji' };
+      return {
+        success: false,
+        error: error.message || 'Błąd rejestracji',
+        errorCode: error.code,
+      };
     }
   };
 
