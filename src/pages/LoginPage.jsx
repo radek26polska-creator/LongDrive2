@@ -30,13 +30,11 @@ const LoginPage = () => {
       } else {
         const message = result.errorCode === 'ACCOUNT_SESSION_ACTIVE'
           ? ACTIVE_SESSION_MESSAGE
-          : result.error || 'Nieprawidłowy email lub hasło';
+          : result.error || 'Nie udało się zalogować. Sprawdź wprowadzone dane.';
         setError(message);
-        toast.error(message);
       }
     } catch (err) {
-      setError('Wystąpił błąd podczas logowania');
-      toast.error('Błąd logowania');
+      setError(err.message || 'Wystąpił błąd podczas logowania');
     } finally {
       setLoading(false);
     }

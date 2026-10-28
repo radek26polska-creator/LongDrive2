@@ -24,13 +24,11 @@ const RegisterPage = () => {
 
     if (password !== confirmPassword) {
       setError('Hasła nie są identyczne');
-      toast.error('Hasła nie są identyczne');
       return;
     }
 
     if (password.length < 6) {
       setError('Hasło musi mieć co najmniej 6 znaków');
-      toast.error('Hasło musi mieć co najmniej 6 znaków');
       return;
     }
 
@@ -43,11 +41,9 @@ const RegisterPage = () => {
         navigate('/');
       } else {
         setError(result.error || 'Błąd rejestracji');
-        toast.error(result.error || 'Błąd rejestracji');
       }
     } catch (err) {
-      setError('Wystąpił błąd podczas rejestracji');
-      toast.error('Błąd rejestracji');
+      setError(err.message || 'Wystąpił błąd podczas rejestracji');
     } finally {
       setLoading(false);
     }
@@ -101,6 +97,7 @@ const RegisterPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                minLength={6}
                 className="bg-slate-700 border-slate-600 text-white"
               />
               <p className="text-xs text-slate-400">Minimalnie 6 znaków</p>
