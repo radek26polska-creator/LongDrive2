@@ -9,6 +9,7 @@ const pool = new Pool({
 const transactionContext = new AsyncLocalStorage();
 
 const camelCaseColumns = new Map([
+  'vehicleId', 'driverId', 'tripId', 'invoiceNumber', 'fullTank',
   'registrationNumber', 'fuelLevel', 'tankSize', 'fuelConsumption', 'vehicleType',
   'fuelType', 'engineCapacity', 'bodyType', 'createdAt', 'updatedAt', 'firstName',
   'lastName', 'licenseNumber', 'licenseExpiry', 'startTime', 'endTime',
@@ -21,7 +22,7 @@ const camelCaseColumns = new Map([
   'driverName', 'liveFuelConsumption', 'driverResultsSignature', 'resultsCalculatedBy',
   'resultsControlSignature',
   'arrivalSignature', 'driverTechSignature', 'fuelIssuedBy', 'tripNumberPrefix',
-  'tripNumberNext', 'zipCode', 'cardPrefix', 'cardCounter',
+  'tripNumberNext', 'zipCode', 'cardPrefix', 'cardCounter', 'issuedBy',
 ].map((name) => [name.toLowerCase(), name]));
 
 const schema = [
@@ -276,6 +277,11 @@ const query = async (sql, params = []) => {
 };
 
 const run = (sql, params = [], callback) => {
+  if (typeof params === 'function') {
+    callback = params;
+    params = [];
+  }
+
   let statement = sql;
   const insert = /^\s*INSERT(?:\s+OR\s+IGNORE)?\s+INTO\s+([a-z0-9_]+)/i.exec(sql);
   if (insert && serialIdTables.has(insert[1].toLowerCase()) && !/\bRETURNING\b/i.test(sql)) {
@@ -294,12 +300,22 @@ const run = (sql, params = [], callback) => {
 };
 
 const get = (sql, params = [], callback) => {
+  if (typeof params === 'function') {
+    callback = params;
+    params = [];
+  }
+
   query(sql, params).then((result) => callback(null, withMappedRows(result.rows)[0]))
     .catch((error) => callback(error));
   return db;
 };
 
 const all = (sql, params = [], callback) => {
+  if (typeof params === 'function') {
+    callback = params;
+    params = [];
+  }
+
   const tableInfo = /^\s*PRAGMA\s+table_info\(([^)]+)\)\s*$/i.exec(sql);
   if (tableInfo) {
     const table = tableInfo[1].replace(/["'`]/g, '').toLowerCase();
