@@ -1,0 +1,31 @@
+﻿UMOWA LICENCYJNA TESTOWEJ WERSJI LONGDRIVE
+
+1. Przedmiot umowy
+
+Niniejsza umowa określa zasady korzystania z testowej wersji programu LongDrive, służącego do zarządzania flotą. Zainstalowanie lub uruchomienie programu oznacza zapoznanie się z umową i jej akceptację. Jeżeli użytkownik nie akceptuje tych warunków, nie powinien instalować ani używać programu.
+
+2. Zakres licencji
+
+Użytkownik otrzymuje ograniczone, niewyłączne i nieprzenoszalne prawo do korzystania z programu wyłącznie w celu jego testowania i oceny. Licencja nie przenosi praw własności intelektualnej do programu ani jego elementów.
+
+Użytkownik może sporządzić kopię instalatora i programu wyłącznie w zakresie niezbędnym do ich instalacji, uruchomienia lub wykonania kopii bezpieczeństwa. Nie wolno rozpowszechniać programu, jego kopii ani udostępniać ich innym osobom bez uprzedniej zgody uprawnionego podmiotu. Nie wolno usuwać oznaczeń prawnych ani podejmować prób obejścia zabezpieczeń. Ograniczenia te nie wyłączają uprawnień, których nie można ograniczyć na mocy obowiązujących przepisów prawa.
+
+3. Charakter wersji testowej
+
+Program jest udostępniany do testów i może zawierać błędy, niekompletne funkcje lub funkcje, które działają inaczej niż oczekiwano. Funkcje, interfejs, wymagania i sposób działania programu mogą ulec zmianie. Nie jest gwarantowane, że program będzie działał nieprzerwanie, bezbłędnie lub będzie odpowiedni do konkretnego celu.
+
+4. Dane i kopie bezpieczeństwa
+
+Użytkownik odpowiada za treść i poprawność danych wprowadzanych do programu, posiadanie praw do tych danych oraz ich zabezpieczenie. Użytkownik powinien regularnie wykonywać kopie bezpieczeństwa i sprawdzać, czy można je odtworzyć. Przed testowaniem importu, aktualizacji lub innych operacji na danych należy wykonać kopię bezpieczeństwa. Odinstalowanie programu nie usuwa katalogu danych LongDrive; zarządzanie tymi danymi, w tym ich kopią lub usunięciem, należy do użytkownika.
+
+5. Korzystanie, aktualizacje i bezpieczeństwo
+
+Programu nie wolno wykorzystywać w sposób sprzeczny z prawem, naruszający prawa innych osób lub zagrażający bezpieczeństwu systemów i danych. Aktualizacje mogą być udostępniane, lecz ich dostępność, zakres i termin nie są gwarantowane. Użytkownik sam decyduje o instalowaniu aktualizacji i powinien przed nimi zabezpieczyć swoje dane.
+
+6. Zakończenie korzystania
+
+Użytkownik może zakończyć korzystanie z programu w dowolnym czasie, odinstalowując go lub zaprzestając jego używania. Dostępność testowej wersji może zostać zakończona. Po zakończeniu testów użytkownik powinien zaprzestać korzystania z programu i usunąć jego kopie, z wyjątkiem kopii, których zachowanie jest wymagane przez prawo. Pliki danych pozostają odrębne od plików programu i nie są automatycznie usuwane podczas odinstalowania.
+
+7. Postanowienia końcowe
+
+Umowa podlega obowiązującym przepisom prawa. Wszelkie ograniczenia odpowiedzialności lub zapewnień mają zastosowanie wyłącznie w zakresie dopuszczalnym przez obowiązujące przepisy prawa; umowa nie wyłącza odpowiedzialności, której wyłączenie jest prawnie niedopuszczalne. Jeżeli którekolwiek postanowienie okaże się nieważne lub niewykonalne, pozostałe postanowienia pozostają w mocy. Umowa dotyczy testowej wersji programu LongDrive i nie stanowi obietnicy udostępnienia wersji produkcyjnej ani przyszłych funkcji.
