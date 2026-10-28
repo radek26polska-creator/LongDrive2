@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: longdrive-v2-backend
+    runtime: node
+    rootDir: server
+    region: frankfurt
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: LONGDRIVE_ALLOWED_ORIGINS
+        value: https://longdrive-v2-frontend.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: longdrive-v2-db
+          property: connectionString
+
+  - type: web
+    name: longdrive-v2-frontend
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://longdrive-v2-backend.onrender.com/api
+
+databases:
+  - name: longdrive-v2-db
+    region: frankfurt
+    plan: free
