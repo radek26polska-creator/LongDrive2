@@ -55,7 +55,8 @@ async function apiRequest(endpoint, options = {}) {
     const response = await fetch(url, config);
     const duration = Date.now() - startTime;
     
-    if (response.status === 401) {
+    const isAuthenticationRequest = endpoint === '/auth/login' || endpoint === '/auth/register';
+    if (response.status === 401 && token && !isAuthenticationRequest) {
       logApi(endpoint, method, 401, { duration });
       if (token && getToken() === token) {
         setToken(null);
