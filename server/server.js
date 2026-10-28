@@ -78,6 +78,13 @@ const startServer = async () => {
   }
 
   app.use((req, res, next) => {
+    if (typeof db.withContext === 'function') {
+      return db.withContext(next);
+    }
+    next();
+  });
+
+  app.use((req, res, next) => {
     const origin = req.get('Origin');
     if (origin && !isOriginAllowed(origin)) {
       return res.status(403).json({ error: 'Origin niedozwolony' });
